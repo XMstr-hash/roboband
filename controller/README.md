@@ -7,6 +7,12 @@ Responsible for:
 - Statistics
 - Display output
 
+## Installation
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python3 main.py
+
 ## Feature-Branches
 feature/g3/mqtt-broker-setup
 - Inhalt: Konfiguration des zentralen Mosquitto Brokers und Definition der Topic-Struktur (anlage/control, anlage/feedback).
