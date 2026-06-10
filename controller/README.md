@@ -9,7 +9,8 @@ Responsible for:
 
 ## Installation
 python -m venv .venv
-source .venv/bin/activate
+(Linux/Mac:) source .venv/bin/activate
+(Windows:) .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 python3 main.py
 

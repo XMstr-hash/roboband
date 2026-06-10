@@ -1,0 +1,14 @@
+# --- KOMMUNIKATION ---
+# MQTT-Bibliothek für den Empfang von Feedback und das Senden von Befehlen
+paho-mqtt==1.6.1
+
+# --- HARDWARE & DISPLAY ---
+# GPIO-Steuerung
+RPi.GPIO==0.7.1
+
+# Treiber für das 1602A QAPASS LCD im Parallel-Modus
+RPLCD==1.3.0
+
+# --- ENTWICKLUNG & TESTING ---
+# Zum sicheren Laden der lokalen IP des MQTT-Brokers aus der .env-Datei
+python-dotenv==1.0.1
