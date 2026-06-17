@@ -3,12 +3,11 @@ import time
 from modules import display, encoder, menu, mqtt
 
 def setup():
-    """Initializes all imported modules before the main loop starts."""
     print("Initializing system...")
-    display.init()
-    encoder.init()
-    menu.init()
-    mqtt.init()
+    #display.init()
+    #encoder.init()
+    #menu.init()
+    #mqtt.init()
     print("System ready!")
 
 def main():
