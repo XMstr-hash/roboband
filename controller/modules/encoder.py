@@ -13,7 +13,7 @@ except ImportError:
         sys.exit(1)
 
 # Importiere das Menü-Modul, um die Events weiterzuleiten
-import menu
+from . import menu
 
 ############## PIN-KONFIGURATION ###########################
 # Passe die Pins hier an deine tatsächliche Verkabelung an

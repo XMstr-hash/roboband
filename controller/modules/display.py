@@ -23,7 +23,7 @@ except ImportError:
         sys.exit(1)
 
 # Importiere das Menü-Modul für die Displaydaten
-import menu
+from . import menu
 
 ############## PIN-KONFIGURATION (BCM) ##################
 # Exakt nach deinem Schaltplan gemappt:
