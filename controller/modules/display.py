@@ -40,7 +40,6 @@ lcd = None  # Globales Display-Objekt
 ############## SCHNITTSTELLE ###########################
 
 def init():
-    #"""Initialisiert die GPIOs, den LCD1602-Treiber und holt das Startmenü."""
     global _is_initialized, _last_line1, _last_line2, lcd
     
     if _is_initialized:
@@ -55,14 +54,16 @@ def init():
     # 2. Hardware-Initialisierung (falls echter Pi)
     if _HARDWARE_AVAILABLE:
         try:
-            # Nutzt BCM-Nummerierung passend zu deinen GPIO-Angaben
+            GPIO.setmode(GPIO.BCM)
+            # KORREKTUR: Komma am Ende der Zeilen hinzugefügt!
             lcd = CharLCD(
                 pin_rs=PIN_RS,
                 pin_e=PIN_E,
                 pins_data=PINS_DATA,
                 numbering_mode=GPIO.BCM,
                 cols=16,
-                rows=2
+                rows=2,
+                compat_mode=True
             )
             lcd.clear()
             print("✓ LCD1602 Hardware erfolgreich initialisiert.")
@@ -80,7 +81,6 @@ def init():
 
 
 def update():
-    #"""Prüft fortlaufend auf Textänderungen und aktualisiert das Display bei Bedarf."""
     global _last_line1, _last_line2
     if not _is_initialized:
         return
@@ -96,18 +96,17 @@ def update():
 
 
 def get_data():
-    #"""Gibt den aktuellen Display-Inhalt als Dictionary zurück."""
     return {"line1": _last_line1, "line2": _last_line2}
 
 
 ############## INTERNE HELFER ###########################
 
 def _render_display(l1, l2):
-    #"""Schreibt die zwei Textzeilen auf das physische LCD oder die PC-Konsole."""
     if _HARDWARE_AVAILABLE and lcd is not None:
         try:
-            lcd.clear()
-            # \n springt automatisch in die zweite Zeile des LCD
+            # OPTIMIERUNG: lcd.home() statt lcd.clear() verhindert extremes Bildschirmflackern
+            lcd.home()
+            # \r\n springt sauber in die zweite Zeile des LCD
             lcd.write_string(f"{l1}\r\n{l2}")
         except Exception as e:
             print(f"⚠ Fehler beim Schreiben aufs LCD: {e}")
@@ -130,4 +129,5 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\nDisplay-Test beendet.")
         if _HARDWARE_AVAILABLE and lcd is not None:
-            lcd.close()  # Schließt das Display und räumt Pins auf
+            # Schließt das Display sauber per RPLCD-Funktion
+            lcd.close() 
