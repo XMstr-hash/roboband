@@ -38,6 +38,7 @@ feature/g3/encoder-menu-input
 - Inhalt: KY-040 Drehgeber zur Menüführung und Anpassung von Parametern (z.B. Förderbandgeschwindigkeit).
 
 # Pinbelegung
+```text
 LCD1602     Raspberry Pi
 
 1  VSS  -> GND
@@ -73,3 +74,4 @@ VCC     -> 3.3V
 CLK     -> GPIO17
 DT      -> GPIO18
 SW      -> GPIO27
+```
