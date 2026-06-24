@@ -14,9 +14,9 @@ _menu_tree = {
     "text": "Hauptmenue",
     "type": "menu",
     "items": [
-        {"text": "Status anzeigen", "type": "action", "cmd": "SHOW_STATUS"},
+        {"text": "1: Status anzeigen", "type": "action", "cmd": "SHOW_STATUS"},
         {
-            "text": "Foerderband",
+            "text": "a: Foerderband",
             "type": "menu",
             "items": [
                 {"text": "Band Start", "type": "action", "cmd": "START"},
@@ -54,7 +54,7 @@ _scroll_top = 0     # Welcher Index wird in der ERSTEN Zeile des Displays angeze
 # INTERNE HELFER
 # ---------------------------------------------------------------------------
 def _inject_back_buttons(menu):
-    """Fügt rekursiv jedem Untermenü einen Zurück-Knopf am Ende hinzu."""
+    #Fügt rekursiv jedem Untermenü einen Zurück-Knopf am Ende hinzu.
     if menu["type"] == "menu" and "items" in menu:
         if not any(item.get("type") == "back" for item in menu["items"]):
             menu["items"].append({"text": "<- Zurueck", "type": "back"})
@@ -65,7 +65,7 @@ def _inject_back_buttons(menu):
 # SCHNITTSTELLE FÜR ENCODER-MODUL
 # ---------------------------------------------------------------------------
 def encoder_rotated(direction):
-    """Navigiert zeilenweise durch die Liste und verschiebt das Anzeigefenster."""
+    #Navigiert zeilenweise durch die Liste und verschiebt das Anzeigefenster.
     global _menu_index, _scroll_top
     if not _is_initialized:
         return
@@ -94,7 +94,7 @@ def encoder_rotated(direction):
 
 
 def encoder_pressed():
-    """Verarbeitet den Klick (Ebene tiefer, Ebene höher oder MQTT-Befehl)."""
+    #Verarbeitet den Klick (Ebene tiefer, Ebene höher oder MQTT-Befehl).
     global _current_menu, _menu_index, _menu_history, _scroll_top
     if not _is_initialized:
         return None
@@ -139,7 +139,7 @@ def set_statuses(band, arm):
 # SCHNITTSTELLE FÜR DISPLAY-MODUL
 # ---------------------------------------------------------------------------
 def get_display_lines():
-    """Gibt die zwei Zeilen basierend auf dem Scroll-Fenster zurück."""
+    #Gibt die zwei Zeilen basierend auf dem Scroll-Fenster zurück.
     items = _current_menu["items"]
     
     if not items:
