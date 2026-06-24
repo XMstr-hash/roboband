@@ -31,7 +31,7 @@ DEBOUNCE_TIME_MS = 250  # 250ms Verzögerung für den Taster
 ############## INTERNE HELFER ###########################
 
 def _rotary_callback(channel):
-    """Wird aufgerufen, wenn sich der Encoder dreht (Interrupt-basiert)."""
+    #Wird aufgerufen, wenn sich der Encoder dreht (Interrupt-basiert).
     global _is_initialized
     if not _is_initialized:
         return
@@ -54,7 +54,7 @@ def _rotary_callback(channel):
 
 
 def _button_callback(channel):
-    """Wird aufgerufen, wenn der Taster gedrückt wird."""
+    #"""Wird aufgerufen, wenn der Taster gedrückt wird."""
     global _last_button_time, _is_initialized
     if not _is_initialized:
         return
@@ -81,7 +81,7 @@ def _button_callback(channel):
 ############## SCHNITTSTELLE ###########################
 
 def init():
-    """Initialisiert die GPIO-Pins und startet die Interrupt-Überwachung."""
+    #"""Initialisiert die GPIO-Pins und startet die Interrupt-Überwachung."""
     global _is_initialized
     
     if _is_initialized:
@@ -109,11 +109,11 @@ def init():
     print("Encoder bereit. Bitte am Rad drehen oder drücken...")
 
 def update():
-    """Wird in der Hauptschleife aufgerufen."""
+    #"""Wird in der Hauptschleife aufgerufen."""
     pass
 
 def get_data():
-    """Gibt Statusinformationen dieses Moduls zurück."""
+    #"""Gibt Statusinformationen dieses Moduls zurück."""
     return "Encoder Running"
 
 
