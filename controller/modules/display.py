@@ -40,7 +40,7 @@ lcd = None  # Globales Display-Objekt
 ############## SCHNITTSTELLE ###########################
 
 def init():
-    """Initialisiert die GPIOs, den LCD1602-Treiber und holt das Startmenü."""
+    #"""Initialisiert die GPIOs, den LCD1602-Treiber und holt das Startmenü."""
     global _is_initialized, _last_line1, _last_line2, lcd
     
     if _is_initialized:
@@ -79,7 +79,7 @@ def init():
 
 
 def update():
-    """Prüft fortlaufend auf Textänderungen und aktualisiert das Display bei Bedarf."""
+    #"""Prüft fortlaufend auf Textänderungen und aktualisiert das Display bei Bedarf."""
     global _last_line1, _last_line2
     if not _is_initialized:
         return
@@ -95,14 +95,14 @@ def update():
 
 
 def get_data():
-    """Gibt den aktuellen Display-Inhalt als Dictionary zurück."""
+    #"""Gibt den aktuellen Display-Inhalt als Dictionary zurück."""
     return {"line1": _last_line1, "line2": _last_line2}
 
 
 ############## INTERNE HELFER ###########################
 
 def _render_display(l1, l2):
-    """Schreibt die zwei Textzeilen auf das physische LCD oder die PC-Konsole."""
+    #"""Schreibt die zwei Textzeilen auf das physische LCD oder die PC-Konsole."""
     if _HARDWARE_AVAILABLE and lcd is not None:
         try:
             lcd.clear()
