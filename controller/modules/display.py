@@ -49,6 +49,7 @@ def init():
     print("display.py Initializing 16x2 text display (Direct GPIO 4-Bit)...")
     
     # 1. Stelle sicher, dass das Menü bereit ist
+    time.sleep(1.0)
     menu.init()
     
     # 2. Hardware-Initialisierung (falls echter Pi)
