@@ -18,8 +18,8 @@ import menu
 ############## PIN-KONFIGURATION ###########################
 # Passe die Pins hier an deine tatsächliche Verkabelung an
 PIN_CLK = 17
-PIN_DT = 27
-PIN_SW = 22
+PIN_DT = 18
+PIN_SW = 27
 
 # Modul-Zustände
 _is_initialized = False

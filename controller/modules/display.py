@@ -14,38 +14,60 @@ except ImportError:
         print("❌ Fehler: Weder RPi.GPIO noch Mock.GPIO sind installiert!")
         sys.exit(1)
 
+# Versuche den echten LCD-Treiber zu laden
+try:
+    from RPLCD.gpio import CharLCD
+except ImportError:
+    if _HARDWARE_AVAILABLE:
+        print("❌ Fehler: 'RPLCD' Bibliothek fehlt! Bitte 'pip install RPLCD' ausführen.")
+        sys.exit(1)
+
 # Importiere das Menü-Modul für die Displaydaten
 import menu
+
+############## PIN-KONFIGURATION (BCM) ##################
+# Exakt nach deinem Schaltplan gemappt:
+PIN_RS = 22
+PIN_E  = 23
+PINS_DATA = [24, 25, 5, 6]  # D4, D5, D6, D7
 
 ############## MODUL-ZUSTÄNDE ###########################
 _is_initialized = False
 _last_line1 = ""
 _last_line2 = ""
-
-############## HARDWARE TREIBER SETUP ###################
-# Falls du ein I2C-Display (z.B. mit dem PCF8574-Rucksack) nutzt,
-# kannst du hier später die entsprechende Bibliothek laden.
-# Beispiel: import RPLCD.i2c as l_i2c
+lcd = None  # Globales Display-Objekt
 
 ############## SCHNITTSTELLE ###########################
 
 def init():
-    """Initialisiert die Display-Hardware und zieht die ersten Menü-Zeilen."""
-    global _is_initialized, _last_line1, _last_line2
+    """Initialisiert die GPIOs, den LCD1602-Treiber und holt das Startmenü."""
+    global _is_initialized, _last_line1, _last_line2, lcd
     
     if _is_initialized:
         return
         
-    print("display.py Initializing 16x2 text display...")
+    print("display.py Initializing 16x2 text display (Direct GPIO 4-Bit)...")
     
     # 1. Stelle sicher, dass das Menü bereit ist
     menu.init()
     
     # 2. Hardware-Initialisierung (falls echter Pi)
     if _HARDWARE_AVAILABLE:
-        # Hier die Display-Pins oder I2C initialisieren
-        # Beispiel: lcd = l_i2c.CharLCD(i2c_expander='PCF8574', address=0x27)
-        pass
+        try:
+            # Nutzt BCM-Nummerierung passend zu deinen GPIO-Angaben
+            lcd = CharLCD(
+                pin_rs=PIN_RS,
+                pin_e=PIN_E,
+                pins_data=PINS_DATA,
+                numbering_mode=GPIO.BCM,
+                cols=16,
+                rows=2
+            )
+            lcd.clear()
+            print("✓ LCD1602 Hardware erfolgreich initialisiert.")
+        except Exception as e:
+            print(f"❌ Fehler bei der LCD-Initialisierung: {e}")
+            lcd = None
 
     # Erste Zeilen holen, damit der Startzustand bekannt ist
     _last_line1, _last_line2 = menu.get_display_lines()
@@ -80,15 +102,16 @@ def get_data():
 ############## INTERNE HELFER ###########################
 
 def _render_display(l1, l2):
-    """Schreibt die zwei Textzeilen auf die Konsole oder die echte Hardware."""
-    if _HARDWARE_AVAILABLE:
-        # HIER DEINEN ECHTEN DISPLAY-SCHREIBBEFEHL EINFÜGEN
-        # Beispiel:
-        # lcd.clear()
-        # lcd.write_string(f"{l1}\n{l2}")
-        pass
+    """Schreibt die zwei Textzeilen auf das physische LCD oder die PC-Konsole."""
+    if _HARDWARE_AVAILABLE and lcd is not None:
+        try:
+            lcd.clear()
+            # \n springt automatisch in die zweite Zeile des LCD
+            lcd.write_string(f"{l1}\r\n{l2}")
+        except Exception as e:
+            print(f"⚠ Fehler beim Schreiben aufs LCD: {e}")
         
-    # Konsolen-Fallback für PC-Tests und Debugging
+    # Konsolen-Fallback für PC-Tests und paralleles Debugging
     print("\n+----------------+")
     print(f"|{l1.rstrip():<16}|")
     print(f"|{l2.rstrip():<16}|")
@@ -100,11 +123,10 @@ if __name__ == "__main__":
     init()
     print("Testmodus: Warte auf Menü-Änderungen über die update()-Schleife...")
     try:
-        # Simulierter Durchlauf für die Konsole
         while True:
             update()
             time.sleep(0.1)
     except KeyboardInterrupt:
         print("\nDisplay-Test beendet.")
-        if _HARDWARE_AVAILABLE:
-            GPIO.cleanup()
+        if _HARDWARE_AVAILABLE and lcd is not None:
+            lcd.close()  # Schließt das Display und räumt Pins auf
