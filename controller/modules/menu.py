@@ -215,7 +215,7 @@ def increment_part(part_type):
 # SCHNITTSTELLE FÜR DISPLAY-MODUL & UPDATE-LOGIK
 # ---------------------------------------------------------------------------
 def update():
-    """Wird zyklisch aufgerufen. Überprüft Inaktivität für automatische Dashboard-Rückkehr."""
+    # Wird zyklisch aufgerufen. Überprüft Inaktivität für automatische Dashboard-Rückkehr."""
     global _current_menu, _menu_index, _scroll_top, _menu_history, _is_initialized
     if not _is_initialized:
         return

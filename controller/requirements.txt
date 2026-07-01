@@ -8,6 +8,7 @@ Mock.GPIO; sys_platform == 'win32'
 
 # Installiert RPi.GPIO NUR auf Linux (Raspberry Pi)
 RPi.GPIO; sys_platform == 'linux'
+rpi-lgpio; sys_platform == 'linux'
 
 # Treiber für das 1602A QAPASS LCD im Parallel-Modus
 RPLCD>=1.3.0
