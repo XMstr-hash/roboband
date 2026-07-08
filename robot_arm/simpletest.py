@@ -1,4 +1,3 @@
-from __future__ import division
 import time
 import Adafruit_PCA9685
 
@@ -15,8 +14,8 @@ GPIO.setup(7,GPIO.OUT, initial=GPIO.HIGH)
 pwm = Adafruit_PCA9685.PCA9685(address=0x41)
 
 # Einstellen der Minimal- und Maximal-Pulslaengen
-servo_min = 150  # Minimale Pulslaenge
-servo_max = 600  # Maximale Pulslaenge
+#servo_min = 150  # Minimale Pulslaenge
+#servo_max = 600  # Maximale Pulslaenge
 
 # Hilfsfunktion
 def set_servo_pulse(channel, pulse):
